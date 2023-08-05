@@ -111,14 +111,22 @@ var checkEvent = function() {
       }if (17 < hour) {
           $("#5pm").addClass("past");
           
-    
       }if (17 == hour) {
           $("#5pm").addClass("present");
           
       };
-    
     // if 60 second check
     }, (1000 * 60) * 5);
     };
-    
+checkEvent();
+
+
+    // save events function
+
+
+    // When save button the event goes to local storage
+
+
+    // When page refreshes the events still persists
+
 
