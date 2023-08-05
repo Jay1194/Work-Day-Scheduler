@@ -116,17 +116,89 @@ var checkEvent = function() {
           
       };
     // if 60 second check
-    }, (1000 * 60) * 5);
+    }, (1000 * 60));
     };
-checkEvent();
 
+    var events = {}; // Define an empty object to store events
 
-    // save events function
+$(document).ready(function() {
 
+  // Load events from local storage on page load
+  loadEvents();
 
-    // When save button the event goes to local storage
+  // Display the events on the page
+  displayEventsOnPage(); 
 
+  // Click event for all "Save" buttons with the class "saveButton"
+  $(".saveBtn").click(function() {
 
-    // When page refreshes the events still persists
+    // Get the key from the data attribute of the button
+    var key = $(this).data("key");
 
+    // Get the value from the corresponding textarea
+    var eventText = $("#" + key).val();
 
+    // Check if the key is valid (not null)
+    if (key && events.hasOwnProperty(key)) {
+
+      // Add the event to the events object
+      events[key].push(eventText);
+
+      // Save the updated events to local storage
+      saveEventsToLocalStorage();
+
+      // Clear the textarea
+      $("#" + key).val("");
+
+      // Update the displayed events on the page after saving
+      displayEventsOnPage();
+    } else {
+      alert("Invalid time to save events.");
+    }
+  });
+});
+
+function loadEvents() {
+
+  // Load events from local storage or initialize with an empty object
+  events = JSON.parse(localStorage.getItem("events"));
+  if (!events) {
+    events = {
+      "9am": [],
+      "10am": [],
+      "11am": [],
+      "12pm": [],
+      "1pm": [],
+      "2pm": [],
+      "3pm": [],
+      "4pm": [],
+      "5pm": []
+    };
+  }
+}
+
+function saveEventsToLocalStorage() {
+    
+  // Save events to local storage
+  localStorage.setItem("events", JSON.stringify(events));
+}
+
+function displayEventsOnPage() {
+
+  // Loop through each key in events object
+  for (var key in events) {
+
+    // Get the value (array of events) for each key
+    var eventList = events[key];
+
+    // Get the corresponding textarea by ID
+    var $textarea = $("#" + key);
+
+     // Clear the textarea before setting the new events
+     $textarea.val('');
+
+    // Set the value of the textarea with events separated by new lines
+    $textarea.val(eventList.join("\n"));
+  }
+}
+    
